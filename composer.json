@@ -1,0 +1,23 @@
+{
+    "name": "kyle/s2smini-project",
+    "description": "s2s php course",
+    "type": "project",
+    "require": {
+        
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "php": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kyle\\S2sminiProject\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "MrKkyle",
+            "email": "Kyle.apocrypha@gmail.com"
+        }
+    ]
+}
