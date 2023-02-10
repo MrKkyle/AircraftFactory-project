@@ -36,7 +36,7 @@ class Aircraft extends Coordinates
 
     public function getId(): int 
     {
-        return self:: $id;
+        return $this->id;
     }
 
 }
