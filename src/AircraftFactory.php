@@ -10,7 +10,7 @@ use Kyle\S2sminiProject\Utils;
 
 class AircraftFactory/* converts the config into aircrafts */
 {
-    public static function newAircraft(string $type, string $name, int $longitude, int $latitude, int $height): Flyable
+    public static function newAircraft(string $type, string $name, int $longitude, int $latitude, int $height): ?Flyable
     {
         try
         {
@@ -39,20 +39,39 @@ class AircraftFactory/* converts the config into aircrafts */
         catch(\Exception $error)
         {
             print_r($error->getMessage());
-            exit();
+            return null;
         }            
     }
 
     public function aircraftSimulation(): void /*returns nothing, requires nothing */
     {
+        $weatherTower = new WeatherTower();
+        $registeredAircrafts = [];
+
+        $weatherTower->changeWeather();
+        
         $aircrafts = include('config/config.php');  /* returns the array of config*/
                                                     /*gets the info of the config file */
-        $type = strtolower($aircrafts["type"]);     /*converts to lowercase to keep the names equal */
-        $name = $aircrafts["name"]; 
-        $longitude = Utils::convertToInt($aircrafts["coordinates"]["longitude"]);
-        $latitude = Utils::convertToInt($aircrafts["coordinates"]["latitude"]);
-        $height = Utils::convertToInt($aircrafts["coordinates"]["height"]);
 
+        foreach($aircrafts as $aircraft)    
+        {
+            $type = strtolower($aircrafts["type"]);     /*converts to lowercase to keep the names equal */
+            $name = $aircrafts["name"]; 
+            $longitude = Utils::convertToInt($aircrafts["coordinates"]["longitude"]);
+            $latitude = Utils::convertToInt($aircrafts["coordinates"]["latitude"]);
+            $height = Utils::convertToInt($aircrafts["coordinates"]["height"]);
+            $flyable = AircraftFactory::newAircraft($type, $name, $longitude, $latitude, $height);
+            if(!is_null($flyable))
+            {
+                $flyable->registerTower();
+                array_push($registeredAircrafts, $flyable);
+            }
+        }                                        
+        
+        foreach($registeredAircrafts as $aircraft)
+        {
+            $aircraft->updateConditions();
+        }
 
     }
 }

@@ -5,7 +5,7 @@ interface Flyable
 {
     public function updateConditions(): void;
 
-    public function registerTower(WeatherTower $weatherTower): void;
+    public function registerTower(): void;
 
 }
 ?>
